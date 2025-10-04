@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ENGLISH APP-GRADE 4</title>
+  <meta name="application-name" content="ENGLISH APP-GRADE 4">
+  <meta name="apple-mobile-web-app-title" content="ENGLISH APP-GRADE 4">
+  <style>
+    :root{
+      /* NỀN SÁNG HƠN */
+      --bg:#ffffff; --paper:#ffffff;
+      --ink:#17223b; --muted:#5c6a86;
+      --brand:#3a86ff; --accent:#8b5cf6;
+      --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+      --frame:#e9eef6; --chip:#eef4ff;
+      --radius:16px; --shadow:0 6px 16px rgba(0,0,0,.06);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--ink);
+      background:
+        radial-gradient(900px 500px at -10% -20%, #f9fbff 30%, transparent 70%),
+        radial-gradient(900px 500px at 110% -20%, #fff9fb 30%, transparent 70%),
+        var(--bg);
+    }
+    .frame{
+      max-width:1040px;margin:20px auto;padding:18px;background:var(--paper);
+      border:1px solid var(--frame); border-radius:24px; box-shadow:var(--shadow)
+    }
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:8px}
+    .title{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:44px;height:44px;border-radius:12px;
+      background:conic-gradient(from 60deg at 50% 50%, var(--brand), var(--accent), var(--ok));
+      box-shadow:inset 0 0 0 4px #fff, var(--shadow)
+    }
+    h1{font-size:20px;line-height:1.2;margin:0}
+    .sub{font-size:12px;color:var(--muted)}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap}
+    .group{display:flex;gap:8px;align-items:center;background:#fff;border:1px solid var(--frame);padding:8px 10px;border-radius:12px}
+    select,button,input[type="number"]{
+      padding:10px 12px;border:1px solid var(--frame);border-radius:12px;background:#fff;color:var(--ink);font-size:14px;outline:none
+    }
+    button{cursor:pointer;transition:transform .05s ease, background .2s ease}
+    button:active{transform:translateY(1px)}
+    .mode-tabs{display:flex;gap:8px;background:#fff;border:1px solid var(--frame);padding:6px;border-radius:12px}
+    .tab{border:none;padding:10px 14px;border-radius:10px;background:transparent}
+    .tab.active{background:var(--brand);color:#fff}
+    .content{display:grid;grid-template-columns:1fr;gap:14px;margin-top:6px}
+    .card{background:#fff;border:1px solid var(--frame);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+
+    /* Vocabulary layout with illustration */
+    .vocab-wrap{display:grid;grid-template-columns:120px 1fr auto;gap:16px;align-items:center}
+    .illu{
+      width:110px;height:110px;border-radius:20px;border:1px solid var(--frame);
+      background:linear-gradient(135deg, #ffffff 0%, #f6f9ff 100%);
+      box-shadow:var(--shadow);display:grid;place-items:center;font-size:56px
+    }
+    .bigword{font-size:40px;line-height:1.1;font-weight:800;letter-spacing:.5px;margin:4px 0 6px}
+    .hint{color:var(--muted);font-size:13px}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .space{justify-content:space-between}
+    .icons{display:flex;gap:10px}
+    .icon-btn{width:56px;height:56px;border-radius:16px;border:1px solid var(--frame);background:#fff;display:grid;place-items:center}
+    .icon-btn[aria-pressed="true"]{outline:3px solid #dbeafe;background:#eef2ff}
+    .primary{background:var(--brand);color:#fff;border:none}
+    .next{background:var(--accent);color:#fff;border:none}
+    .transcript{background:#f7f9ff;border:1px dashed #cfd7ea;border-radius:12px;padding:10px;font-size:14px}
+    .scorebar{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;align-items:end}
+    .tick{height:10px;background:#edf2ff;border-radius:3px}
+    .tick.on{background:linear-gradient(180deg,#cfe0ff,var(--brand))}
+    .scoreline{font-weight:700}
+    .toast{padding:10px 12px;border-radius:12px;font-size:14px}
+    .toast.ok{background:#ecfdf5;color:#065f46;border:1px solid #bbf7d0}
+    .toast.warn{background:#fff7ed;color:#7c2d12;border:1px solid #fed7aa}
+    .toast.bad{background:#fef2f2;color:#7f1d1d;border:1px solid #fecaca}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{background:var(--chip);border:1px solid #dbe4ff;color:#2b3674;padding:8px 10px;border-radius:999px;font-size:13px}
+
+    /* Sentence builder */
+    .builder{display:grid;gap:10px}
+    .builder .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .builder .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .sentence{font-size:20px;font-weight:700;background:#f6f8ff;border:1px solid #dfe6fb;border-radius:12px;padding:10px}
+    .question{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      background:linear-gradient(180deg,#fffaf3 0%,#fff 100%);
+      border:1px solid #ffe1b5;border-radius:14px;padding:10px 12px
+    }
+    .qtext{font-weight:700}
+    .columns-answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .muted{color:var(--muted)}
+    .foot{font-size:12px;color:var(--muted);text-align:center;margin-top:2px}
+    @media (max-width:760px){
+      .vocab-wrap{grid-template-columns:1fr;gap:10px}
+      .columns-answers{grid-template-columns:1fr}
+      .bigword{font-size:32px}
+      .icon-btn{width:52px;height:52px}
+    }
+  </style>
+</head>
+<body>
+  <div class="frame" role="application" aria-label="ENGLISH APP-GRADE 4">
+    <header>
+      <div class="title">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>ENGLISH APP-GRADE 4</h1>
+          <div class="sub">Units 1–5 • Vocabulary & Sentence Builder • Voice & Mic Practice</div>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="group">
+          <label for="unitSel">Unit:</label>
+          <select id="unitSel" aria-label="Chọn Unit"></select>
+        </div>
+        <div class="mode-tabs" role="tablist" aria-label="Chọn chế độ học">
+          <button class="tab active" role="tab" aria-selected="true" id="tabVocab">Từ vựng</button>
+          <button class="tab" role="tab" aria-selected="false" id="tabSentence">Mẫu câu</button>
+        </div>
+        <div class="group">
+          <label for="voiceSel">Giọng:</label>
+          <select id="voiceSel" aria-label="Chọn giọng đọc"></select>
+        </div>
+        <div class="group">
+          <label for="rate">Tốc độ:</label>
+          <input id="rate" type="number" min="0.7" max="1.4" step="0.1" value="1.0" aria-label="Tốc độ đọc"/>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Vocabulary Panel -->
+      <section id="panelVocab" class="card" aria-labelledby="tabVocab">
+        <div class="vocab-wrap">
+          <div id="illu" class="illu" aria-hidden="true">🔤</div>
+          <div>
+            <div class="hint">Unit hiện tại • Từ số <span id="vIndex">1</span>/<span id="vTotal">—</span></div>
+            <div id="word" class="bigword" aria-live="polite">—</div>
+            <div class="chips" id="topicChips"></div>
+          </div>
+          <div class="icons">
+            <button id="speakWord" class="icon-btn" aria-label="Nghe phát âm từ">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 9v6h4l5 4V5L9 9H5z" stroke="currentColor" stroke-width="1.8" fill="none"/>
+                <path d="M16.5 8.5a4 4 0 010 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <button id="recWord" class="icon-btn" aria-label="Thu âm đọc từ" aria-pressed="false">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="9" y="3" width="6" height="10" rx="3" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M5 11a7 7 0 0014 0M12 18v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <button id="prevWord" class="icon-btn" aria-label="Từ trước">
+              <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+            </button>
+            <button id="nextWord" class="icon-btn next" aria-label="Từ tiếp theo">
+              <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="row space" style="margin-top:10px">
+          <div style="flex:1;min-width:260px">
+            <div class="hint">Bạn nói:</div>
+            <div id="heardWord" class="transcript" aria-live="polite">—</div>
+          </div>
+          <div style="flex:1;min-width:260px">
+            <div class="row space">
+              <div class="hint">Điểm phát âm</div>
+              <div class="scoreline"><span id="scoreWord">0</span>/10</div>
+            </div>
+            <div class="scorebar" aria-hidden="true" id="barWord"></div>
+          </div>
+        </div>
+        <div id="toastWord" class="toast" style="margin-top:10px;display:none"></div>
+      </section>
+
+      <!-- Sentence Panel -->
+      <section id="panelSentence" class="card" hidden aria-labelledby="tabSentence">
+        <!-- Question -->
+        <div class="question">
+          <div>
+            <div class="hint">CÂU HỎI LUYỆN</div>
+            <div id="questionHint" class="qtext" aria-live="polite">—</div>
+          </div>
+          <button id="speakQuestion" class="icon-btn" aria-label="Nghe câu hỏi">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 9v6h4l5 4V5L9 9H5z" stroke="currentColor" stroke-width="1.8" fill="none"/>
+              <path d="M16.5 8.5a4 4 0 010 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Builder -->
+        <div class="builder" id="builder"></div>
+
+        <!-- Answers: mẫu & của bạn -->
+        <div class="columns-answers" style="margin-top:6px">
+          <div>
+            <div class="row space">
+              <div class="hint">CÂU TRẢ LỜI MẪU</div>
+              <div class="icons">
+                <button id="speakModel" class="icon-btn" aria-label="Nghe câu trả lời mẫu">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M5 9v6h4l5 4V5L9 9H5z" stroke="currentColor" stroke-width="1.8" fill="none"/>
+                    <path d="M16.5 8.5a4 4 0 010 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div id="modelAnswer" class="sentence" aria-live="polite">—</div>
+          </div>
+
+          <div>
+            <div class="row space">
+              <div class="hint">CÂU TRẢ LỜI CỦA BẠN</div>
+              <div class="icons">
+                <button id="speakSentence" class="icon-btn" aria-label="Nghe câu trả lời của bạn">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M5 9v6h4l5 4V5L9 9H5z" stroke="currentColor" stroke-width="1.8" fill="none"/>
+                    <path d="M16.5 8.5a4 4 0 010 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
+                </button>
+                <button id="recSentence" class="icon-btn" aria-label="Thu âm đọc câu" aria-pressed="false">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <rect x="9" y="3" width="6" height="10" rx="3" stroke="currentColor" stroke-width="1.8"/>
+                    <path d="M5 11a7 7 0 0014 0M12 18v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div id="builtSentence" class="sentence" aria-live="polite">—</div>
+          </div>
+        </div>
+
+        <div class="row space" style="margin-top:10px">
+          <div style="flex:1;min-width:260px">
+            <div class="hint">Bạn nói:</div>
+            <div id="heardSentence" class="transcript" aria-live="polite">—</div>
+          </div>
+          <div style="flex:1;min-width:260px">
+            <div class="row space">
+              <div class="hint">Điểm phát âm</div>
+              <div class="scoreline"><span id="scoreSentence">0</span>/10</div>
+            </div>
+            <div class="scorebar" aria-hidden="true" id="barSentence"></div>
+          </div>
+        </div>
+        <div id="toastSentence" class="toast" style="margin-top:10px;display:none"></div>
+      </section>
+    </div>
+
+    <div class="foot">Dùng <strong>Google Chrome</strong> để bật micro. Chọn <strong>Giọng</strong> (Anh–Anh/Mỹ/Úc). Hình minh hoạ có thể thay bằng ảnh riêng.</div>
+  </div>
+
+  <script>
+    /***********************
+     * 1) DỮ LIỆU HỌC TẬP *
+     ***********************/
+    const DATA = {
+      units: {
+        1: {
+          name: "UNIT 1 • MY FRIENDS",
+          vocab: ["America","Australia","Britain","Viet Nam","Japan","Thailand","Malaysia","Singapore"],
+          topicChips:["countries","friends","where from?"],
+          qs: ["Where are you from?","Where is he from?","Where is she from?"],
+          builderType: "country",
+          theme:["#3a86ff","#8b5cf6"]
+        },
+        2: {
+          name: "UNIT 2 • TIME AND DAILY ROUTINES",
+          vocab: ["o’clock","thirty","forty five","time","get up","have breakfast","go to school","go to bed","do homework","wash face","clean the teeth"],
+          topicChips:["time","daily routines"],
+          qs: ["What time do you get up?"],
+          builderType: "routine",
+          theme:["#22c55e","#06b6d4"]
+        },
+        3: {
+          name: "UNIT 3 • MY WEEK",
+          vocab: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","today","study at school","do housework","listen to music","stay at home"],
+          topicChips:["days","activities"],
+          qs: ["What day is it today?","What do you do on Monday?"],
+          builderType: "week",
+          theme:["#f59e0b","#f43f5e"]
+        },
+        4: {
+          name: "UNIT 4 • MY BIRTHDAY PARTY",
+          vocab: ["chips","grapes","jam","juice"],
+          topicChips:["food","drinks","party"],
+          qs: ["What do you want to eat?","What do you want to drink?"],
+          builderType: "party",
+          theme:["#8b5cf6","#a78bfa"]
+        },
+        5: {
+          name: "UNIT 5 • THINGS WE CAN DO",
+          vocab: ["ride a bike","ride a horse","play the piano","play the guitar","roller skate"],
+          topicChips:["can/can’t","skills"],
+          qs: ["Can you ride a bike?","Can he ride a bike?"],
+          builderType: "ability",
+          theme:["#ef4444","#f97316"]
+        }
+      },
+      days: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      countries:["America","Australia","Britain","Viet Nam","Japan","Thailand","Malaysia","Singapore"],
+      routines:[
+        "get up","have breakfast","go to school","go to bed","do homework","wash face","clean the teeth"
+      ],
+      partyEat:["chips","grapes","jam"],
+      partyDrink:["juice"],
+      abilities:["ride a bike","ride a horse","play the piano","play the guitar","roller skate"]
+    };
+
+    /* 1b) HÌNH MINH HOẠ (emoji/biểu tượng) — có thể thay bằng URL ảnh thật */
+    const ILLUSTRATIONS = {
+      "America":"🇺🇸","Australia":"🇦🇺","Britain":"🇬🇧","Viet Nam":"🇻🇳","Japan":"🇯🇵","Thailand":"🇹🇭","Malaysia":"🇲🇾","Singapore":"🇸🇬",
+      "o’clock":"⏰","thirty":"🕧","forty five":"⏱️","time":"⏳","get up":"🌅","have breakfast":"🥣","go to school":"🏫","go to bed":"🛌",
+      "do homework":"📚","wash face":"🚿","clean the teeth":"🪥",
+      "Monday":"📅","Tuesday":"📅","Wednesday":"📅","Thursday":"📅","Friday":"📅","Saturday":"📅","Sunday":"📅","today":"📆",
+      "study at school":"📖","do housework":"🧹","listen to music":"🎧","stay at home":"🏠",
+      "chips":"🍟","grapes":"🍇","jam":"🍓","juice":"🧃",
+      "ride a bike":"🚴","ride a horse":"🐎","play the piano":"🎹","play the guitar":"🎸","roller skate":"🛼"
+    };
+
+    /**************************
+     * 2) PHẦN TỬ GIAO DIỆN  *
+     **************************/
+    const unitSel = document.getElementById('unitSel');
+    const voiceSel = document.getElementById('voiceSel');
+    const rateInput = document.getElementById('rate');
+
+    const tabVocab = document.getElementById('tabVocab');
+    const tabSentence = document.getElementById('tabSentence');
+    const panelVocab = document.getElementById('panelVocab');
+    const panelSentence = document.getElementById('panelSentence');
+
+    const vIndexEl = document.getElementById('vIndex');
+    const vTotalEl = document.getElementById('vTotal');
+    const illuEl = document.getElementById('illu');
+    const wordEl = document.getElementById('word');
+    const topicChips = document.getElementById('topicChips');
+
+    const speakWordBtn = document.getElementById('speakWord');
+    const recWordBtn = document.getElementById('recWord');
+    const nextWordBtn = document.getElementById('nextWord');
+    const prevWordBtn = document.getElementById('prevWord');
+    const heardWord = document.getElementById('heardWord');
+    const scoreWord = document.getElementById('scoreWord');
+    const barWord = document.getElementById('barWord');
+    const toastWord = document.getElementById('toastWord');
+
+    const builderWrap = document.getElementById('builder');
+    const speakQuestionBtn = document.getElementById('speakQuestion');
+    const speakModelBtn = document.getElementById('speakModel');
+    const speakSentenceBtn = document.getElementById('speakSentence');
+    const recSentenceBtn = document.getElementById('recSentence');
+    const modelAnswerEl = document.getElementById('modelAnswer');
+    const builtSentenceEl = document.getElementById('builtSentence');
+    const questionHint = document.getElementById('questionHint');
+    const heardSentence = document.getElementById('heardSentence');
+    const scoreSentence = document.getElementById('scoreSentence');
+    const barSentence = document.getElementById('barSentence');
+    const toastSentence = document.getElementById('toastSentence');
+
+    /*****************
+     * 3) TTS (đọc)
+     *****************/
+    let VOICES = [];
+    function loadVoices(){
+      VOICES = speechSynthesis.getVoices();
+      const preferredOrders = [["en-GB","British"],["en-US","American"],["en-AU","Australian"]];
+      voiceSel.innerHTML='';
+      preferredOrders.forEach(([code,label])=>{
+        const group = VOICES.filter(v=> v.lang.startsWith(code));
+        if(group.length){
+          const optgroup = document.createElement('optgroup');
+          optgroup.label = label;
+          group.forEach(v=>{
+            const o=document.createElement('option');
+            o.value=v.name; o.textContent = `${label}: ${v.name}`;
+            optgroup.appendChild(o);
+          });
+          voiceSel.appendChild(optgroup);
+        }
+      });
+      if(!voiceSel.options.length){
+        const anyEn = VOICES.filter(v=> v.lang.toLowerCase().startsWith('en'));
+        anyEn.forEach(v=>{
+          const o=document.createElement('option');
+          o.value=v.name; o.textContent = `English: ${v.name}`; voiceSel.appendChild(o);
+        });
+      }
+      if(voiceSel.options.length) voiceSel.selectedIndex = 0;
+    }
+    if('speechSynthesis' in window){
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = ()=> loadVoices();
+    }
+    function speak(text){
+      if(!('speechSynthesis' in window)) return;
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = parseFloat(rateInput.value||'1') || 1;
+      const voiceName = voiceSel.value;
+      const v = VOICES.find(v=> v.name===voiceName);
+      if(v) u.voice = v;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(u);
+    }
+
+    /*****************
+     * 4) ÂM THANH: vỗ tay & beep lỗi
+     *****************/
+    const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext||window.webkitAudioContext)() : null;
+    function playBeepError(){
+      if(!audioCtx) return;
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.type='square'; o.frequency.setValueAtTime(320, audioCtx.currentTime);
+      g.gain.setValueAtTime(0.001,audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.25, audioCtx.currentTime+0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+0.35);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(); o.stop(audioCtx.currentTime+0.36);
+    }
+    function playApplause(){
+      if(!audioCtx) return;
+      const dur = 0.8, sr = audioCtx.sampleRate, N = sr * dur;
+      const buf = audioCtx.createBuffer(1, N, sr);
+      const data = buf.getChannelData(0);
+      for(let i=0;i<N;i++){
+        const t = i/N, env = Math.pow(1 - t, 2);
+        data[i] = (Math.random()*2-1) * env * 0.6;
+      }
+      const src = audioCtx.createBufferSource(); src.buffer=buf;
+      const filter = audioCtx.createBiquadFilter(); filter.type='bandpass'; filter.frequency.value=1800; filter.Q.value=0.7;
+      const gain = audioCtx.createGain(); gain.gain.value=0.6;
+      src.connect(filter).connect(gain).connect(audioCtx.destination);
+      src.start();
+      setTimeout(()=>{ const s2=audioCtx.createBufferSource(); s2.buffer=buf; s2.connect(filter).connect(gain); s2.start(); },120);
+      setTimeout(()=>{ const s3=audioCtx.createBufferSource(); s3.buffer=buf; s3.connect(filter).connect(gain); s3.start(); },250);
+    }
+
+    /*****************
+     * 5) MIC (SpeechRecognition)
+     *****************/
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+    let recognizer = null;
+    let isRecWord = false, isRecSentence = false;
+    function initRecognizer(){
+      if(!SR) return null;
+      const r = new SR(); r.lang = 'en-US'; r.interimResults=false; r.maxAlternatives=1; return r;
+    }
+
+    /*****************
+     * 6) MINH HOẠ
+     *****************/
+    function renderIllustration(word){
+      const art = ILLUSTRATIONS[word];
+      illuEl.innerHTML = '';
+      if(typeof art === 'string' && /^https?:\/\//.test(art)){
+        const img = new Image(); img.src = art; img.alt = word; img.style.maxWidth='80%'; img.style.maxHeight='80%';
+        illuEl.appendChild(img);
+      }else{
+        illuEl.textContent = art || '🔤';
+      }
+      illuEl.setAttribute('title', 'Illustration: '+word);
+    }
+
+    /*****************
+     * 7) NGỮ PHÁP (he/she/it)
+     *****************/
+    const THIRD = s => ['he','she','it'].includes(String(s||'').toLowerCase());
+    function conjVerbBase(base, subj){
+      const b = base.toLowerCase();
+      if(!THIRD(subj)) return base;
+      if(b==='have') return 'has';
+      if(b==='do')   return 'does';
+      if(b==='go')   return 'goes';
+      if(/[^aeiou]y$/.test(b)) return base.slice(0,-1)+'ies';  // study -> studies
+      if(/(o|s|x|z|ch|sh)$/.test(b)) return base+'es';         // go/watch/brush -> goes/watches/brushes
+      return base+'s';
+    }
+    function routineParts(phrase){
+      const dict = {
+        'get up':['get','up'],
+        'have breakfast':['have','breakfast'],
+        'go to school':['go','to school'],
+        'go to bed':['go','to bed'],
+        'do homework':['do','homework'],
+        'wash face':['wash','face'],
+        'clean the teeth':['clean','the teeth']
+      };
+      return dict[phrase] || [phrase.split(' ')[0], phrase.split(' ').slice(1).join(' ')];
+    }
+    function conjRoutinePhrase(phrase, subj){
+      const [base, rest] = routineParts(phrase);
+      return conjVerbBase(base, subj) + (rest?(' '+rest):'');
+    }
+
+    /*****************
+     * 8) TIME WORDS
+     *****************/
+    const pad = n => String(n).padStart(2,'0');
+    function timeToWords(h, m, ampm){
+      h = parseInt(h,10); m=parseInt(m,10);
+      const names = ["twelve","one","two","three","four","five","six","seven","eight","nine","ten","eleven"];
+      const hh = names[h%12];
+      let mm = "";
+      if(m===0) mm = "o’clock";
+      else if(m===30) mm = "thirty";
+      else if(m===45) mm = "forty five";
+      else mm = pad(m);
+      return `${hh} ${mm}${ampm?(' '+ampm):''}`.trim();
+    }
+
+    /*****************
+     * 9) BUILDER THEO UNIT
+     *****************/
+    function renderBuilder(unitId){
+      builderWrap.innerHTML='';
+      const u = DATA.units[unitId];
+      questionHint.textContent = u.qs?.[0] || '—';
+      modelAnswerEl.textContent = '—';
+      builtSentenceEl.textContent = '—';
+
+      /* UNIT 1 – MY FRIENDS */
+      if(u.builderType==='country'){
+        builderWrap.innerHTML = `
+          <div class="grid">
+            <div>
+              <label>Chủ ngữ</label>
+              <select id="bSubj">
+                <option>I</option><option>He</option><option>She</option><option>We</option><option>They</option>
+              </select>
+            </div>
+            <div>
+              <label>Quốc gia</label>
+              <select id="bCountry">${DATA.countries.map(c=>`<option>${c}</option>`).join('')}</select>
+            </div>
+          </div>
+          <div class="row" style="gap:8px;margin-top:4px">
+            <button id="makeSentence" class="primary">Tạo câu</button>
+            <div class="chips">
+              <span class="chip">“Where are you from?”</span>
+              <span class="chip">“I’m from …”</span>
+              <span class="chip">“Where is he/she from?”</span>
+            </div>
+          </div>`;
+        const make = ()=>{
+          const s = builderWrap.querySelector('#bSubj').value;
+          const c = builderWrap.querySelector('#bCountry').value;
+          const be = (s==='I')?"I'm":(s==='He'?'He\'s':(s==='She'?'She\'s':(s==='We'?'We\'re':'They\'re')));
+          const ans = `${be} from ${c}.`;
+          modelAnswerEl.textContent = ans;            // câu trả lời mẫu
+          builtSentenceEl.textContent = ans;          // câu trả lời của bạn (mặc định giống mẫu)
+          questionHint.textContent = (s==='I')?"Where are you from?":`Where is ${s.toLowerCase()} from?`;
+        };
+        builderWrap.querySelector('#makeSentence')?.addEventListener('click', make);
+        builderWrap.addEventListener('change', make);
+        make();
+      }
+
+      /* UNIT 2 – TIME & DAILY ROUTINES */
+      if(u.builderType==='routine'){
+        builderWrap.innerHTML = `
+          <div class="builder grid-3">
+            <div>
+              <label>Chủ ngữ</label>
+              <select id="bSubj">
+                <option>I</option><option>He</option><option>She</option><option>We</option><option>They</option>
+              </select>
+            </div>
+            <div>
+              <label>Hoạt động</label>
+              <select id="bVerb">
+                ${DATA.routines.map(v=>`<option>${v}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label>Giờ</label>
+              <div class="row">
+                <select id="bHour">${[...Array(12)].map((_,i)=>`<option>${i+1}</option>`).join('')}</select>
+                <select id="bMin"><option>0</option><option>30</option><option>45</option></select>
+                <select id="bAmPm"><option>AM</option><option>PM</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="gap:12px;margin-top:4px">
+            <label class="row" style="gap:6px"><input type="checkbox" id="ckTime" checked/> Thêm giờ vào câu trả lời</label>
+            <button id="makeSentence" class="primary">Tạo câu</button>
+            <div class="chips"><span class="chip">“What time do you …?”</span><span class="chip">he/she → washes / goes / does</span></div>
+          </div>`;
+        const make = ()=>{
+          const s = builderWrap.querySelector('#bSubj').value;
+          const v = builderWrap.querySelector('#bVerb').value;
+          const inc = builderWrap.querySelector('#ckTime').checked;
+          // CÂU HỎI
+          const base = routineParts(v)[0]; // get/have/go/do/wash/clean
+          const qAux = (s==='He'||s==='She')?'does':'do';
+          const qSubj = (s==='He'||s==='She')? s.toLowerCase() : 'you';
+          questionHint.textContent = `What time ${qAux} ${qSubj} ${base}${v.includes(' ')?' '+v.split(' ').slice(1).join(' '):''}?`;
+          // CÂU TRẢ LỜI
+          const verbPhrase = conjRoutinePhrase(v, s);
+          let ans = `${s} ${verbPhrase}`;
+          if(inc){
+            const hh = builderWrap.querySelector('#bHour').value;
+            const mm = builderWrap.querySelector('#bMin').value;
+            const ap = builderWrap.querySelector('#bAmPm').value;
+            ans += ` at ${timeToWords(hh,mm,ap)}.`;
+          }else ans += `.`;
+          modelAnswerEl.textContent = ans;     // mẫu
+          builtSentenceEl.textContent = ans;   // của bạn (mặc định)
+        };
+        builderWrap.querySelector('#makeSentence')?.addEventListener('click', make);
+        builderWrap.addEventListener('change', make);
+        make();
+      }
+
+      /* UNIT 3 – MY WEEK */
+      if(u.builderType==='week'){
+        builderWrap.innerHTML = `
+          <div class="builder grid">
+            <div>
+              <label>Chủ ngữ</label>
+              <select id="bSubj">
+                <option>I</option><option>He</option><option>She</option><option>We</option><option>They</option>
+              </select>
+            </div>
+            <div>
+              <label>Thứ/ngày</label>
+              <select id="bDay">${DATA.days.map(d=>`<option>${d}</option>`).join('')}</select>
+            </div>
+          </div>
+          <div style="margin-top:8px">
+            <label>Kiểu câu</label>
+            <select id="bWeekMode">
+              <option value="its">It's [Day].</option>
+              <option value="doon">I/He/She … (theo ngày chọn)</option>
+            </select>
+          </div>
+          <div id="actRow" style="margin-top:8px">
+            <label>Hoạt động</label>
+            <select id="bWeekAct">
+              <option>study at school</option>
+              <option>do housework</option>
+              <option>listen to music</option>
+              <option>stay at home</option>
+            </select>
+          </div>
+          <div class="row" style="gap:8px;margin-top:4px">
+            <button id="makeSentence" class="primary">Tạo câu</button>
+            <div class="chips">
+              <span class="chip">“What day is it today?” → It’s …</span>
+              <span class="chip">“What do you do on …?” → I …</span>
+            </div>
+          </div>`;
+        const make = ()=>{
+          const s = builderWrap.querySelector('#bSubj').value;
+          const d = builderWrap.querySelector('#bDay').value;
+          const mode = builderWrap.querySelector('#bWeekMode').value;
+          const actRow = builderWrap.querySelector('#actRow');
+          if(mode==='its'){
+            const ans = `It's ${d}.`;
+            modelAnswerEl.textContent = ans; builtSentenceEl.textContent = ans;
+            questionHint.textContent = "What day is it today?";
+            actRow.style.display='none';
+          }else{
+            actRow.style.display='';
+            const act = builderWrap.querySelector('#bWeekAct').value;
+            const main = act.split(' ')[0];
+            const subjText = (s.toLowerCase()==='i'?'I':s);
+            let verb = conjVerbBase(main, s);
+            let ans = '';
+            // THEO yêu cầu đề bài: trả lời dạng ngắn "I …"
+            if(act.startsWith('listen')) ans = `${subjText} ${verb} to music.`;
+            else if(act.startsWith('do')) ans = `${subjText} ${verb} housework.`;
+            else if(act.startsWith('stay')) ans = `${subjText} ${verb} at home.`;
+            else if(act.startsWith('study')) ans = `${subjText} ${verb} at school.`;
+            modelAnswerEl.textContent = ans; builtSentenceEl.textContent = ans;
+            questionHint.textContent = `What do you do on ${d}?`;
+          }
+        };
+        builderWrap.querySelector('#makeSentence')?.addEventListener('click', make);
+        builderWrap.addEventListener('change', make);
+        make();
+      }
+
+      /* UNIT 4 – PARTY */
+      if(u.builderType==='party'){
+        builderWrap.innerHTML = `
+          <div class="grid">
+            <div>
+              <label>Chọn loại</label>
+              <select id="bType"><option>eat</option><option>drink</option></select>
+            </div>
+            <div>
+              <label>Món</label>
+              <select id="bItem"></select>
+            </div>
+          </div>
+          <div class="row" style="gap:8px;margin-top:4px">
+            <button id="makeSentence" class="primary">Tạo câu</button>
+            <div class="chips"><span class="chip">“What do you want to eat/drink?”</span> <span class="chip">“I want some …”</span></div>
+          </div>`;
+        const typeSel = builderWrap.querySelector('#bType');
+        const itemSel = builderWrap.querySelector('#bItem');
+        function fill(){
+          const arr = (typeSel.value==='eat')? DATA.partyEat : DATA.partyDrink;
+          itemSel.innerHTML = arr.map(x=>`<option>${x}</option>`).join('');
+        }
+        const make = ()=>{
+          const t = typeSel.value, item = itemSel.value;
+          const ans = `I want some ${item}.`;
+          modelAnswerEl.textContent = ans; builtSentenceEl.textContent = ans;
+          questionHint.textContent = (t==='eat') ? "What do you want to eat?" : "What do you want to drink?";
+        };
+        fill();
+        builderWrap.querySelector('#makeSentence')?.addEventListener('click', make);
+        builderWrap.addEventListener('change', (e)=>{ if(['bType','bItem'].includes(e.target.id)) { fill(); make(); } });
+        make();
+      }
+
+      /* UNIT 5 – CAN/CAN'T */
+      if(u.builderType==='ability'){
+        builderWrap.innerHTML = `
+          <div class="grid-3">
+            <div>
+              <label>Chủ ngữ</label>
+              <select id="bSubj"><option>I</option><option>He</option><option>She</option></select>
+            </div>
+            <div>
+              <label>Trả lời</label>
+              <select id="bAns"><option>Yes</option><option>No</option></select>
+            </div>
+            <div>
+              <label>Hành động</label>
+              <select id="bAbility">${DATA.abilities.map(a=>`<option>${a}</option>`).join('')}</select>
+            </div>
+          </div>
+          <div style="margin-top:8px">
+            <label>Nếu “No”, chọn khả năng khác để bù:</label>
+            <select id="bAbility2"><option value="">(tùy chọn)</option>${DATA.abilities.map(a=>`<option>${a}</option>`).join('')}</select>
+          </div>
+          <div class="row" style="gap:8px;margin-top:4px">
+            <button id="makeSentence" class="primary">Tạo câu</button>
+            <div class="chips"><span class="chip">“Can you …?”</span><span class="chip">“Yes, I can.”</span><span class="chip">“No, he can’t, but he can …”</span></div>
+          </div>`;
+        const make = ()=>{
+          const s = builderWrap.querySelector('#bSubj').value;
+          const ans = builderWrap.querySelector('#bAns').value;
+          const a1 = builderWrap.querySelector('#bAbility').value;
+          const a2 = builderWrap.querySelector('#bAbility2').value;
+          let out = '';
+          if(ans==='Yes'){
+            out = `Yes, ${s.toLowerCase()==='i'?'I':s.toLowerCase()} can.`;
+            questionHint.textContent = `Can ${s.toLowerCase()==='i'?'you':s.toLowerCase()} ${a1}?`;
+          }else{
+            const pron = s.toLowerCase()==='i'?'I':s.toLowerCase();
+            out = `No, ${pron} can’t` + (a2?`, but ${pron} can ${a2}.` : '.');
+            questionHint.textContent = `Can ${s.toLowerCase()==='i'?'you':s.toLowerCase()} ${a1}?`;
+          }
+          modelAnswerEl.textContent = out; builtSentenceEl.textContent = out;
+        };
+        builderWrap.querySelector('#makeSentence')?.addEventListener('click', make);
+        builderWrap.addEventListener('change', make);
+        make();
+      }
+    }
+
+    /*****************
+     * 10) ĐIỂM PHÁT ÂM & PHẢN HỒI
+     *****************/
+    function renderBar(el, value){
+      el.innerHTML = '';
+      for(let i=1;i<=10;i++){
+        const d = document.createElement('div');
+        d.className = 'tick'+(i<=value?' on':'');
+        d.style.height = (6 + i*2) + 'px';
+        el.appendChild(d);
+      }
+    }
+    function showToast(el, type, msg){
+      el.className = 'toast '+(type||'ok'); el.textContent = msg; el.style.display='block';
+      clearTimeout(el._t); el._t=setTimeout(()=> el.style.display='none', 3500);
+    }
+    function normalize(s){
+      return (s||'').toLowerCase()
+        .replace(/’/g,"'")
+        .replace(/[^a-z0-9' ]+/g,' ')
+        .replace(/\s+/g,' ')
+        .trim();
+    }
+    function levenshtein(a,b){
+      a = normalize(a); b=normalize(b);
+      const al=a.length, bl=b.length;
+      if(al===0) return bl; if(bl===0) return al;
+      const dp = Array.from({length:al+1}, ()=> Array(bl+1).fill(0));
+      for(let i=0;i<=al;i++) dp[i][0]=i;
+      for(let j=0;j<=bl;j++) dp[0][j]=j;
+      for(let i=1;i<=al;i++){
+        for(let j=1;j<=bl;j++){
+          const cost = a[i-1]===b[j-1]?0:1;
+          dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+cost);
+        }
+      }
+      return dp[al][bl];
+    }
+    function score10(target, spoken){
+      const A = normalize(target), B = normalize(spoken);
+      if(!B) return 1;
+      const dist = levenshtein(A,B);
+      const maxLen = Math.max(A.length, B.length) || 1;
+      const sim = Math.max(0, 1 - dist/maxLen);
+      let s = Math.round(sim*9)+1; s = Math.max(1, Math.min(10, s));
+      return s;
+    }
+    function afterScored(where, s){
+      const isHigh = s>=9, isLow = s<=4;
+      if(isHigh){ playApplause(); speak('Excellent!'); }
+      else if(isLow){ playBeepError(); speak('You can do it better.'); }
+      if(where==='word'){
+        scoreWord.textContent = s; renderBar(barWord, s);
+        if(isHigh) showToast(toastWord,'ok','👏 Excellent! Phát âm rất tốt.');
+        else if(s>=7) showToast(toastWord,'ok','👍 Khá tốt! Cố gắng rõ âm hơn nhé.');
+        else if(s>=5) showToast(toastWord,'warn','🟠 Chưa chuẩn lắm, đọc chậm và nhấn trọng âm.');
+        else showToast(toastWord,'bad','❌ Chưa đúng. Nghe mẫu rồi đọc lại nhé.');
+      }else{
+        scoreSentence.textContent = s; renderBar(barSentence, s);
+        if(isHigh) showToast(toastSentence,'ok','👏 Excellent! Câu rất chuẩn.');
+        else if(s>=7) showToast(toastSentence,'ok','👍 Khá tốt! Nói liền mạch tự nhiên hơn.');
+        else if(s>=5) showToast(toastSentence,'warn','🟠 Cần rõ ràng hơn từng từ trong câu.');
+        else showToast(toastSentence,'bad','❌ Phát âm chưa đúng. Nghe lại câu rồi thử lần nữa nhé.');
+      }
+    }
+
+    /*****************
+     * 11) LOGIC TỪ VỰNG
+     *****************/
+    let currentUnit = 1;
+    let vIndex = 0;
+
+    function fillUnitSelector(){
+      unitSel.innerHTML='';
+      Object.entries(DATA.units).forEach(([id,u])=>{
+        const o=document.createElement('option'); o.value=id; o.textContent = `${id}. ${u.name}`; unitSel.appendChild(o);
+      });
+    }
+    function applyTheme(unitId){
+      const [brand, accent] = DATA.units[unitId].theme || ['#3a86ff','#8b5cf6'];
+      document.documentElement.style.setProperty('--brand', brand);
+      document.documentElement.style.setProperty('--accent', accent);
+    }
+    function setUnit(id){
+      currentUnit = parseInt(id,10);
+      applyTheme(currentUnit);
+      const u = DATA.units[currentUnit];
+      vIndex = 0;
+      vTotalEl.textContent = u.vocab.length;
+      vIndexEl.textContent = vIndex+1;
+      const w = u.vocab[vIndex];
+      wordEl.textContent = w;
+      renderIllustration(w);
+      topicChips.innerHTML = u.topicChips.map(t=>`<span class="chip">${t}</span>`).join('');
+      renderBar(barWord, 0); scoreWord.textContent = '0'; heardWord.textContent='—';
+      renderBuilder(currentUnit);
+    }
+    function nextWord(delta=1){
+      const u = DATA.units[currentUnit];
+      vIndex = (vIndex + delta + u.vocab.length) % u.vocab.length;
+      vIndexEl.textContent = vIndex+1;
+      const w = u.vocab[vIndex];
+      wordEl.textContent = w;
+      renderIllustration(w);
+      renderBar(barWord, 0); scoreWord.textContent = '0'; heardWord.textContent='—';
+    }
+
+    // Loa/Mic từ vựng
+    speakWordBtn.addEventListener('click', ()=> speak(wordEl.textContent));
+    recWordBtn.addEventListener('click', ()=>{
+      if(!SR){ showToast(toastWord,'warn','Trình duyệt chưa hỗ trợ thu âm (SpeechRecognition). Vui lòng dùng Chrome.'); return; }
+      if(isRecWord){ recognizer && recognizer.abort(); isRecWord=false; recWordBtn.setAttribute('aria-pressed','false'); return; }
+      recognizer = initRecognizer();
+      recognizer.lang = (voiceSel.value && VOICES.find(v=>v.name===voiceSel.value)?.lang) || 'en-US';
+      isRecWord=true; recWordBtn.setAttribute('aria-pressed','true'); heardWord.textContent='(đang nghe…)';
+      recognizer.onresult = (e)=>{
+        const text = e.results[0][0].transcript; heardWord.textContent = text;
+        isRecWord=false; recWordBtn.setAttribute('aria-pressed','false');
+        const s = score10(wordEl.textContent, text); afterScored('word', s);
+      };
+      recognizer.onerror = ()=>{ isRecWord=false; recWordBtn.setAttribute('aria-pressed','false'); showToast(toastWord,'bad','Không thu được âm. Thử lại nhé.'); };
+      recognizer.onend = ()=>{ isRecWord=false; recWordBtn.setAttribute('aria-pressed','false'); };
+      recognizer.start();
+    });
+    nextWordBtn.addEventListener('click', ()=> nextWord(+1));
+    prevWordBtn.addEventListener('click', ()=> nextWord(-1));
+
+    /*****************
+     * 12) LOGIC CÂU
+     *****************/
+    speakQuestionBtn.addEventListener('click', ()=> speak(questionHint.textContent));
+    speakModelBtn.addEventListener('click', ()=> speak(modelAnswerEl.textContent));
+    speakSentenceBtn.addEventListener('click', ()=> speak(builtSentenceEl.textContent));
+
+    recSentenceBtn.addEventListener('click', ()=>{
+      if(!SR){ showToast(toastSentence,'warn','Trình duyệt chưa hỗ trợ thu âm (SpeechRecognition). Vui lòng dùng Chrome.'); return; }
+      if(isRecSentence){ recognizer && recognizer.abort(); isRecSentence=false; recSentenceBtn.setAttribute('aria-pressed','false'); return; }
+      recognizer = initRecognizer();
+      recognizer.lang = (voiceSel.value && VOICES.find(v=>v.name===voiceSel.value)?.lang) || 'en-US';
+      isRecSentence=true; recSentenceBtn.setAttribute('aria-pressed','true'); heardSentence.textContent='(đang nghe…)';
+      recognizer.onresult = (e)=>{
+        const text = e.results[0][0].transcript; heardSentence.textContent = text;
+        isRecSentence=false; recSentenceBtn.setAttribute('aria-pressed','false');
+        const s = score10(builtSentenceEl.textContent, text); afterScored('sentence', s);
+      };
+      recognizer.onerror = ()=>{ isRecSentence=false; recSentenceBtn.setAttribute('aria-pressed','false'); showToast(toastSentence,'bad','Không thu được âm. Thử lại nhé.'); };
+      recognizer.onend = ()=>{ isRecSentence=false; recSentenceBtn.setAttribute('aria-pressed','false'); };
+      recognizer.start();
+    });
+
+    /*****************
+     * 13) KHỞI TẠO
+     *****************/
+    function renderBarInit(){ renderBar(barWord, 0); renderBar(barSentence, 0); }
+    renderBarInit();
+    fillUnitSelector(); setUnit(1);
+
+    // Warm up TTS
+    if('speechSynthesis' in window){
+      const warm = new SpeechSynthesisUtterance('');
+      window.speechSynthesis.speak(warm);
+    }
+
+    // Tabs
+    tabVocab.addEventListener('click', ()=>{
+      tabVocab.classList.add('active'); tabVocab.setAttribute('aria-selected','true');
+      tabSentence.classList.remove('active'); tabSentence.setAttribute('aria-selected','false');
+      panelVocab.hidden=false; panelSentence.hidden=true;
+    });
+    tabSentence.addEventListener('click', ()=>{
+      tabSentence.classList.add('active'); tabSentence.setAttribute('aria-selected','true');
+      tabVocab.classList.remove('active'); tabVocab.setAttribute('aria-selected','false');
+      panelVocab.hidden=true; panelSentence.hidden=false;
+    });
+
+    unitSel.addEventListener('change', (e)=> setUnit(e.target.value));
+  </script>
+</body>
+</html>
